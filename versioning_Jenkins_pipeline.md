@@ -35,6 +35,10 @@ mvn build-helper:parse-version versions:set -DnewVersion=\${parsedVersion.majorV
 
 **The version in the pom.xml file was increased from 1.1.0-SNAPSHOT to 1.1.1**
 
+
+<img width="1800" height="911" alt="versioning1" src="https://github.com/user-attachments/assets/c0703057-937e-4c6b-bd8c-c78f1a334b4a" />
+
+
 2. **To increment the minor version after a more advanced and larger application change, I executed the following**
 
 ```bash
@@ -43,6 +47,10 @@ mvn build-helper:parse-version versions:set \
 ```
 
 **The version in the pom.xml file changed from 1.1.1 to 1.2.1**
+
+
+<img width="1800" height="911" alt="versioning2" src="https://github.com/user-attachments/assets/b8d44b6c-e4d5-4cc6-b732-662a5568b1fa" />
+
 
 **If I was using npm I would use a plugin or script that reads the version from package.json file, increments it and saves it back into package.json. Gradle and yarn will do something similar**
 
@@ -94,7 +102,24 @@ CMD java -jar java-maven-app-*.jar
 
 5. **I then committed these changes to the Git repository in the jenkins-jobs branch, then I built a pipeline for the jenkins-jobs branch - the jenkins-jobs build was successfully completed**
 
-**I then added code to the Jenkinsfile to make Jenkins commit the new pom.xml with the updated Image version back to the Git repo. So, if other developers wanted to to commit something to that branch, they first needed to fetch the pom.xml changed file that Jenkins committed, and then continue working from there**
+
+<img width="1800" height="651" alt="versioning3" src="https://github.com/user-attachments/assets/78b7abbf-cc75-484b-9be5-62a886e6c9e2" />
+
+
+<img width="1800" height="748" alt="versioning4" src="https://github.com/user-attachments/assets/7d9132a6-9640-4987-936b-15406d315ca5" />
+
+
+<img width="1800" height="748" alt="versioning5" src="https://github.com/user-attachments/assets/ae4273d2-ce0a-4943-b8e2-409bf141a71a" />
+
+
+<img width="1800" height="659" alt="versioning6" src="https://github.com/user-attachments/assets/eb8d010f-3278-45bb-8852-3f731b0bdef7" />
+
+
+<img width="859" height="555" alt="versioning7" src="https://github.com/user-attachments/assets/bad56bfe-9095-4330-8eeb-28213660c703" />
+
+
+
+**I then added code to the Jenkinsfile to make Jenkins commit the new pom.xml with the updated Image version back to the Git repo. So, if other developers wanted to to commit something to that branch, they first needed to fetch the updated pom.xml file that Jenkins committed, and then continue working from there**
 
 **I added this stage to the Jenkinsfile**
 
@@ -122,12 +147,22 @@ stage('commit version update') {
 
 **I could now see the new pom.xml file was committed to the Gitlab repo at the end**
 
+
+<img width="1831" height="662" alt="versioning8" src="https://github.com/user-attachments/assets/108d4b23-ed6b-4025-a61e-f152d331f3a1" />
+
+
+<img width="1831" height="789" alt="versioning9" src="https://github.com/user-attachments/assets/90172604-5030-488d-950e-5a7b2aee9f53" />
+ 
+
+<img width="1831" height="429" alt="versioning10" src="https://github.com/user-attachments/assets/608067ff-65dd-448a-880e-0e562a290fc6" />
+
+
 **Now the gitlab credentials have been set I could now remove it for the next build**
 
 6. **Lastly, I ignored Jenkins commit for Jenkins pipeline trigger - so there is no automatic triggerring of a new build each time a commit happens on the git repository - so there is no Jenkins/Git commit loop**
 
-**I installed a plugin - "Ignore Committer Strategy" - this plugin gives me more configuration options for my multibranch pipeline - to ignore commits in our Gitlab repo made from Jenkins**
+**I installed a plugin - "Ignore Committer Strategy" - this plugin gave me more configuration options for my multibranch pipeline - to ignore commits in my Gitlab repo made from Jenkins**
 
-**I then went to my multibranch configuration settings in Jenkins UI - under "Branch Sources" I saw the "Build Strategies" setting - I added an "Ignore Committer Strategy" and entered the email of an author who makes commits (to be ignored - pipeline will not be started for this type of commit). I also selected "allow builds for any other authors" which are not in the list of emails I provided. I then saved it**
+**I then went to my multibranch configuration settings in Jenkins UI - under "Branch Sources" I saw the "Build Strategies" setting - I added an "Ignore Committer Strategy" selection and entered the email of an author who makes commits (to be ignored - pipeline will not be started for this type of commit). I also selected "allow builds for any other authors" which are not in the list of emails I provided. I then saved it**
 
 **Now after making a change to the Jenkinsfile and committing it, there was no Jenkins/Git commit loop**
